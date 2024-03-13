@@ -1,0 +1,41 @@
+server:
+  port: 8300
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8282/realms/meter_data_app_realm/protocol/openid-connect/certs
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meter_data
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    locations: "classpath:db/migrations"
+
+keycloak:
+  server-url: http://localhost:8282
+  realm: "meter_data_app_realm"
+  client-id: "meter_data_app_client"
+  client-secret: "9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB"
+  admin-realm: "master"
+  admin-client-id: "admin-cli"
+  admin-username: "admin"
+  admin-password: "admin"
+  username-claim: "preferred_username"
+  roles: "roles"
+  claim-realm-access: "realm_access"
+  resource-access: "resource_access"
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: meter_data_app_client
+      client-secret: 9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB
