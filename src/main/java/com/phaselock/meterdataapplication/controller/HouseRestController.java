@@ -1,14 +1,20 @@
 package com.phaselock.meterdataapplication.controller;
 
-import com.phaselock.meterdataapplication.dto.entity.HouseCreateDto;
-import com.phaselock.meterdataapplication.entity.House;
+import com.phaselock.meterdataapplication.dto.entity.create.HouseCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.read.ApartmentReadDto;
+import com.phaselock.meterdataapplication.dto.entity.read.HouseReadDto;
 import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
 import com.phaselock.meterdataapplication.service.HouseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,25 +24,116 @@ import java.util.Optional;
 public class HouseRestController {
     private final HouseService houseService;
 
+    @Operation(
+            summary = "Creating a house.",
+            operationId = "createHouse",
+            description = "Creating a house.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = HouseReadDto.class))
+                            }),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = NotFoundException.class))
+                            }),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = Exception.class))
+                            }
+                    )
+            }
+    )
     @PostMapping("")
     @PreAuthorize("hasRole('user') or hasRole('owner') or hasRole('admin')")
-    public HouseCreateDto addHouse(@RequestBody HouseCreateDto houseCreateDto) {
+    public HouseReadDto addHouse(@RequestBody HouseCreateDto houseCreateDto) {
         return houseService.saveHouse(houseCreateDto);
     }
 
+    @Operation(
+            summary = "Find all houses.",
+            operationId = "findAllHouses",
+            description = "Find all houses.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = List.class))
+                            }),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = NotFoundException.class))
+                            }),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = Exception.class))
+                            }
+                    )
+            }
+    )
     @GetMapping("")
     @PreAuthorize("hasRole('admin')")
-    public Iterable<House> getAllHouses() {
+    public List<HouseReadDto> getAllHouses() {
         return houseService.findAll();
     }
 
+    @Operation(
+            summary = "Find house by Id.",
+            operationId = "findHouseById",
+            description = "Find house by Id.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = HouseReadDto.class))
+                            }),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = NotFoundException.class))
+                            }),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = Exception.class))
+                            }
+                    )
+            }
+    )
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
-    public Optional<House> getHouseById(@PathVariable("id") Integer id) throws NotFoundException {
+    public Optional<HouseReadDto> getHouseById(@PathVariable("id") Integer id) throws NotFoundException {
         return houseService.findById(id);
     }
 
-    @PostMapping("/{id}")
+    @Operation(
+            summary = "Delete house by Id.",
+            operationId = "deleteHouseById",
+            description = "Delete house by Id.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Ok",
+                            content = {
+                                    @Content(mediaType = "application/json")
+                            }),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = NotFoundException.class))
+                            }),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = {
+                                    @Content(mediaType = "application/json", schema =
+                                    @Schema(implementation = Exception.class))
+                            }
+                    )
+            }
+    )
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
     public void deleteHouseById(@PathVariable("id") Integer id) {
         houseService.deleteById(id);

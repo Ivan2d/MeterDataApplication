@@ -1,11 +1,10 @@
-package com.phaselock.meterdataapplication.dto.entity;
+package com.phaselock.meterdataapplication.dto.entity.create;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +31,4 @@ public class OwnerCreateDto {
     @Schema(description = "Owner's phone", example = "15002252525")
     @Pattern(regexp = "^[0-9\\-+]{7,15}$")
     private String phone;
-
-    @Schema(description = "Apartment's id", example = "1")
-    @Positive(message = "Apartment id can't be 0 or less then 0")
-    private Integer apartmentId;
 }

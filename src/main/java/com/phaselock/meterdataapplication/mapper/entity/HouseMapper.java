@@ -1,16 +1,17 @@
 package com.phaselock.meterdataapplication.mapper.entity;
 
-import com.phaselock.meterdataapplication.dto.entity.HouseCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.create.HouseCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.read.HouseReadDto;
 import com.phaselock.meterdataapplication.entity.House;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HouseMapper {
-    public HouseCreateDto map(House house) {
-        HouseCreateDto houseCreateDto = new HouseCreateDto();
-        houseCreateDto.setHouseNumber(house.getHouseNumber());
-        houseCreateDto.setAddress(house.getAddress());
-        return houseCreateDto;
+    public HouseReadDto map(House house) {
+        HouseReadDto houseReadDto = new HouseReadDto();
+        houseReadDto.setHouseNumber(house.getHouseNumber());
+        houseReadDto.setAddress(house.getAddress());
+        return houseReadDto;
     }
 
     public House map(HouseCreateDto houseCreateDto) {

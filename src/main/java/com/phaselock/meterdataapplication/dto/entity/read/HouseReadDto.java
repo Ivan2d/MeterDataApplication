@@ -1,4 +1,4 @@
-package com.phaselock.meterdataapplication.dto.entity;
+package com.phaselock.meterdataapplication.dto.entity.read;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Dto to create house entity.")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class HouseCreateDto {
+public class HouseReadDto {
     @Schema(description = "Number of house", example = "1")
     @Positive(message = "House number can't be 0 or less then 0")
     private Integer houseNumber;

@@ -1,21 +1,23 @@
 package com.phaselock.meterdataapplication.service;
 
-import com.phaselock.meterdataapplication.dto.entity.ApartmentCreateDto;
-import com.phaselock.meterdataapplication.entity.Apartment;
+import com.phaselock.meterdataapplication.dto.entity.create.ApartmentCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.read.ApartmentReadDto;
 import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.ApartmentMapper;
 import com.phaselock.meterdataapplication.repository.ApartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ApartmentService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentMapper apartmentMapper;
-    public ApartmentCreateDto saveApartment(ApartmentCreateDto apartmentCreateDto) {
+    public ApartmentReadDto saveApartment(ApartmentCreateDto apartmentCreateDto) {
         return Optional.of(apartmentCreateDto)
                 .map(apartmentMapper::map)
                 .map(apartmentRepository::save)
@@ -23,12 +25,16 @@ public class ApartmentService {
                 .orElseThrow();
     }
 
-    public Iterable<Apartment> findAll() {
-        return apartmentRepository.findAll();
+    public List<ApartmentReadDto> findAll() {
+        return apartmentRepository.findAll()
+                .stream()
+                .map(apartmentMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Apartment> findById(Integer id) {
+    public Optional<ApartmentReadDto> findById(Integer id) {
         return Optional.ofNullable(apartmentRepository.findById(id)
+                .map(apartmentMapper::map)
                 .orElseThrow(() -> new NotFoundException("This apartment not exist")));
     }
 

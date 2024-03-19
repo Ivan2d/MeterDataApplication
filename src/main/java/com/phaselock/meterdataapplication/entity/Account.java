@@ -1,12 +1,7 @@
 package com.phaselock.meterdataapplication.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
+import lombok.*;
 
 @Data
 @Builder
@@ -14,15 +9,15 @@ import java.math.BigDecimal;
 @Table(name = "account")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"apartment"})
+@EqualsAndHashCode(exclude = {"apartment"})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "account_number")
     private Integer accountNumber;
-    @Column(name = "balance")
-    private BigDecimal balance;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 }

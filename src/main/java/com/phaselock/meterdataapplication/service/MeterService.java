@@ -1,6 +1,7 @@
 package com.phaselock.meterdataapplication.service;
 
-import com.phaselock.meterdataapplication.dto.entity.MeterCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.create.MeterCreateDto;
+import com.phaselock.meterdataapplication.dto.entity.read.MeterReadDto;
 import com.phaselock.meterdataapplication.entity.Meter;
 import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.MeterMapper;
@@ -8,7 +9,9 @@ import com.phaselock.meterdataapplication.repository.MeterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +19,7 @@ public class MeterService {
     private final MeterRepository meterRepository;
     private final MeterMapper meterMapper;
 
-    public MeterCreateDto saveMeter(MeterCreateDto meterCreateDto) {
+    public MeterReadDto saveMeter(MeterCreateDto meterCreateDto) {
         return Optional.of(meterCreateDto)
                 .map(meterMapper::map)
                 .map(meterRepository::save)
@@ -24,12 +27,16 @@ public class MeterService {
                 .orElseThrow();
     }
 
-    public Iterable<Meter> findAll() {
-        return meterRepository.findAll();
+    public List<MeterReadDto> findAll() {
+        return meterRepository.findAll()
+                .stream()
+                .map(meterMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Meter> findById(Integer id) {
+    public Optional<MeterReadDto> findById(Integer id) {
         return Optional.ofNullable(meterRepository.findById(id)
+                .map(meterMapper::map)
                 .orElseThrow(() -> new NotFoundException("This meter not exist")));
     }
 
@@ -38,11 +45,11 @@ public class MeterService {
                 .ifPresent(account -> meterRepository.deleteById(id));
     }
 
-    public Iterable<Meter> findByApartmentId(Integer id) {
+    public List<Meter> findByApartmentId(Integer id) {
         return meterRepository.findAllByApartmentId(id);
     }
 
-    public Iterable<Meter> findAllMeterByAllOwnerId(Integer id) {
+    public List<Meter> findAllMeterByAllOwnerId(Integer id) {
         return meterRepository.findAllByApartmentAndOwnerId(id);
     }
 }

@@ -6,14 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MeterRepository extends JpaRepository<Meter, Integer> {
-    Iterable<Meter> findAllByApartmentId(Integer apartment_id);
+    List<Meter> findAllByApartmentId(Integer apartment_id);
     @Query(nativeQuery = true, value =
                 """
                 SELECT meter.*
-                FROM meter INNER JOIN apartment a ON meter.apartment_id = a.id
-                INNER JOIN owner o ON a.id = o.apartment_id WHERE o.id = :ownerId
+                FROM meter
+                INNER JOIN apartment a ON meter.apartment_id = a.id
+                INNER JOIN apartment_owner ao ON a.id = ao.apartment_id
+                WHERE ao.owner_id = :ownerId
                 """)
-    Iterable<Meter> findAllByApartmentAndOwnerId(@Param("ownerId") Integer id);
+    List<Meter> findAllByApartmentAndOwnerId(@Param("ownerId") Integer id);
 }

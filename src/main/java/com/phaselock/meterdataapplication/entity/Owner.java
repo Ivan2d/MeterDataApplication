@@ -1,17 +1,19 @@
 package com.phaselock.meterdataapplication.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@Builder
 @Entity
-@Table(name = "owner")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "owner")
+@ToString(exclude = {"apartmentAndOwners"})
+@EqualsAndHashCode(exclude = {"apartmentAndOwners"})
 public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,7 @@ public class Owner {
     private String lastName;
     @Column(name = "phone")
     private String phone;
-    @ManyToOne
-    @JoinColumn(name = "apartment_id")
-    private Apartment apartment;
+    @Builder.Default
+    @OneToMany(mappedBy = "owner")
+    private List<ApartmentAndOwner> apartmentAndOwners = new ArrayList<>();
 }
