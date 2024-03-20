@@ -21,18 +21,15 @@ spring:
     locations: "classpath:db/migrations"
 
 keycloak:
-  server-url: http://localhost:8282
-  realm: "meter_data_app_realm"
-  client-id: "meter_data_app_client"
-  client-secret: "9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB"
-  admin-realm: "master"
-  admin-client-id: "admin-cli"
-  admin-username: "admin"
-  admin-password: "admin"
-  username-claim: "preferred_username"
-  roles: "roles"
-  claim-realm-access: "realm_access"
-  resource-access: "resource_access"
+  admin-username: admin
+  admin-password: admin
+  admin-realm: master
+  admin-client-id: admin-cli
+  realm: meter_data_app_realm
+  roles: roles
+  client-id: meter_data_app_client
+  client-secret: 9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB
+  auth-server-url: http://localhost:8282
 
 springdoc:
   swagger-ui:

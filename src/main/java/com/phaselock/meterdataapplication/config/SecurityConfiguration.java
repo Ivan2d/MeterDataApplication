@@ -29,18 +29,11 @@ public class SecurityConfiguration {
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 );
-        http
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(
-                               Customizer.withDefaults()
-                        )
-                );
-        http
-                .sessionManagement(sessionManager ->
-                        sessionManager
+        http.oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults()));
+        http.sessionManagement(sessionManager -> sessionManager
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http
-                .csrf(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

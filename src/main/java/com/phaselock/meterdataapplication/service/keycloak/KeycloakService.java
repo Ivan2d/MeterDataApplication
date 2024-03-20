@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.phaselock.meterdataapplication.config.keycloak.KeycloakConfiguration;
 import com.phaselock.meterdataapplication.dto.keycloak.UserAuthDto;
 import com.phaselock.meterdataapplication.dto.keycloak.UserRegisterDto;
 import com.phaselock.meterdataapplication.dto.keycloak.AccessTokenDto;
@@ -42,11 +41,24 @@ public class KeycloakService {
         CredentialRepresentation credential = createPasswordCredentials(dto.getPassword());
         UserRepresentation user = new UserRepresentation();
         user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
         user.setCredentials(Collections.singletonList(credential));
         user.setEnabled(true);
-        UsersResource usersResource = getUsersResource();
-        try(var ignored = usersResource.create(user)){
-            addRealmRoleToUser(dto.getUsername(), dto.getUserRoleDto().name());
+        UsersResource usersResource = keycloak.realm(REALM).users();
+        try (var ignored = usersResource.create(user)) {
+            if (ignored.getStatus() != 201) {
+                String responseBody = ignored.readEntity(String.class);
+                System.out.println("User creation response body: " + responseBody);
+                throw new RuntimeException("Failed to create user");
+            }
+            RealmResource realmResource = keycloak.realm(REALM);
+            List<UserRepresentation> users = realmResource.users().search(dto.getUsername());
+            UserResource userResource = realmResource.users().get(users.getFirst().getId());
+            RoleRepresentation role = realmResource.roles().get(dto.getUserRoleDto().name().toLowerCase()).toRepresentation();
+            RoleMappingResource roleMappingResource = userResource.roles();
+            roleMappingResource.realmLevel().add(Collections.singletonList(role));
         }
     }
 
@@ -56,7 +68,7 @@ public class KeycloakService {
                         .serverUrl(AUTH_SERVER_URL)
                         .realm(REALM)
                         .clientId(CLIENT_ID)
-                        .clientSecret(KeycloakConfiguration.CLIENT_SECRET)
+                        .clientSecret(CLIENT_SECRET)
                         .username(authDto.getUsername())
                         .password(authDto.getPassword())
                         .grantType(OAuth2Constants.PASSWORD)
@@ -69,7 +81,7 @@ public class KeycloakService {
 
     public LogoutResponseDto logoutUser(LogoutRequestDto logoutRequestDto) {
         try {
-            try(var httpClient = HttpClients.createDefault()){
+            try (var httpClient = HttpClients.createDefault()) {
                 String logoutUrl = AUTH_SERVER_URL + "/realms/" + REALM + "/protocol/openid-connect/logout";
                 HttpPost httpPost = new HttpPost(logoutUrl);
                 httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -88,19 +100,6 @@ public class KeycloakService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void addRealmRoleToUser(String username, String roleName) {
-        RealmResource realmResource = keycloak.realm(REALM);
-        List<UserRepresentation> users = realmResource.users().search(username);
-        UserResource userResource = realmResource.users().get(users.getFirst().getId());
-        RoleRepresentation role = realmResource.roles().get(roleName).toRepresentation();
-        RoleMappingResource roleMappingResource = userResource.roles();
-        roleMappingResource.realmLevel().add(Collections.singletonList(role));
-    }
-
-    private UsersResource getUsersResource() {
-        return keycloak.realm(REALM).users();
     }
 
     private static CredentialRepresentation createPasswordCredentials(String password) {

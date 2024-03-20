@@ -18,12 +18,9 @@ public class KeycloakConfiguration {
     public static String ADMIN_CLIENT_ID;
     public static String ADMIN_USERNAME;
     public static String ADMIN_PASSWORD;
-    public static String USERNAME_CLAIM;
     public static String ROLES;
-    public static String CLAIM_REALM_ACCESS;
-    public static String RESOURCE_ACCESS;
 
-    @Value("${keycloak.server-url}")
+    @Value("${keycloak.auth-server-url}")
     public void setAuthServerUrl(String authServerUrl) {
         AUTH_SERVER_URL = authServerUrl;
     }
@@ -43,14 +40,14 @@ public class KeycloakConfiguration {
         CLIENT_SECRET = clientSecret;
     }
 
+    @Value("${keycloak.admin-client-id}")
+    public void setAdminClientId(String adminCli) {
+        ADMIN_CLIENT_ID = adminCli;
+    }
+
     @Value("${keycloak.admin-realm}")
     public void setAdminRealm(String adminRealm) {
         ADMIN_REALM = adminRealm;
-    }
-
-    @Value("${keycloak.admin-client-id}")
-    public void setAdminClientId(String clientId) {
-        ADMIN_CLIENT_ID = clientId;
     }
 
     @Value("${keycloak.admin-username}")
@@ -63,34 +60,16 @@ public class KeycloakConfiguration {
         ADMIN_PASSWORD = adminPassword;
     }
 
-    @Value("${keycloak.username-claim}")
-    public void setUsernameClaim(String usernameClaim) {
-        USERNAME_CLAIM = usernameClaim;
-    }
-
     @Value("${keycloak.roles}")
     public void setRoles(String roles) {
         ROLES = roles;
     }
-
-    @Value("${keycloak.claim-realm-access}")
-    public void setClaimRealmAccess(String claimRealmAccess) {
-        CLAIM_REALM_ACCESS = claimRealmAccess;
-    }
-
-    @Value("${keycloak.resource-access}")
-    public void setResourceAccess(String resourceAccess) {
-        RESOURCE_ACCESS = resourceAccess;
-    }
-
     @Bean
     public Keycloak keycloak() {
         return KeycloakBuilder.builder()
                 .serverUrl(AUTH_SERVER_URL)
-                .realm(REALM)
-                .grantType(CLIENT_CREDENTIALS)
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
+                .realm(ADMIN_REALM)
+                .clientId(ADMIN_CLIENT_ID)
                 .username(ADMIN_USERNAME)
                 .password(ADMIN_PASSWORD)
                 .build();

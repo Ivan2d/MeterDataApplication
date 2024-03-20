@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Dto to registration")
 public class UserRegisterDto {
+    private String email;
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
     private UserRoleDto userRoleDto;
