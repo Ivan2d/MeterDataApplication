@@ -1,9 +1,8 @@
 package com.phaselock.meterdataapplication.controller;
 
 import com.phaselock.meterdataapplication.dto.entity.create.MeterCreateDto;
-import com.phaselock.meterdataapplication.dto.entity.read.ApartmentReadDto;
 import com.phaselock.meterdataapplication.dto.entity.read.MeterReadDto;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.service.MeterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

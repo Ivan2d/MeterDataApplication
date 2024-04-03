@@ -1,5 +1,32 @@
 version: "3.9"
 services:
+  meter-data-service:
+    build:
+      context: .
+    depends_on:
+      - keycloak-postgres
+      - application-postgres
+      - keycloak
+      - rabbitmq
+    ports:
+      - "8300:8300"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://application-postgres:5432/meter_data
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/meter_data_app_realm/protocol/openid-connect/certs
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_ID: meter_data_app_client
+      SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: 9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB
+    networks:
+      - mynetwork
+    command: [ "sh", "-c", "sleep 10 && java -jar /app.jar" ]
+
   keycloak-postgres:
     image: library/postgres:${KC_POSTGRES_IMAGE_TAG:-14}
     container_name: ${POSTGRES_CONTAINER_NAME:-postgres}
@@ -9,7 +36,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     healthcheck:
-      test: pg_isready -d postgres
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -20,6 +47,8 @@ services:
       resources:
         limits:
           memory: 256M
+    networks:
+      - mynetwork
 
   keycloak:
     image: quay.io/keycloak/keycloak:20.0.2
@@ -50,3 +79,38 @@ services:
       interval: 30s
       retries: 3
       timeout: 5s
+    networks:
+      - mynetwork
+
+  application-postgres:
+    image: library/postgres:${KC_POSTGRES_IMAGE_TAG:-14}
+    container_name: meter_data_postgres
+    restart: on-failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meter_data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

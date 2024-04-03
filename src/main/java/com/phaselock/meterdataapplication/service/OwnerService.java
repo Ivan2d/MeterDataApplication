@@ -2,7 +2,7 @@ package com.phaselock.meterdataapplication.service;
 
 import com.phaselock.meterdataapplication.dto.entity.create.OwnerCreateDto;
 import com.phaselock.meterdataapplication.dto.entity.read.OwnerReadDto;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.OwnerMapper;
 import com.phaselock.meterdataapplication.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;

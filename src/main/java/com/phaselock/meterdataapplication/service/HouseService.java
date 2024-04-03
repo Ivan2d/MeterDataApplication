@@ -2,7 +2,7 @@ package com.phaselock.meterdataapplication.service;
 
 import com.phaselock.meterdataapplication.dto.entity.create.HouseCreateDto;
 import com.phaselock.meterdataapplication.dto.entity.read.HouseReadDto;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.HouseMapper;
 import com.phaselock.meterdataapplication.repository.HouseRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package com.phaselock.meterdataapplication.exception.handler;
 
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotificationException;
 import com.phaselock.meterdataapplication.util.ResponseEntityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,13 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundExceptionExceptions(NotFoundException exception) {
         return ResponseEntityUtil.responseResultGenerate(
-                HttpStatus.BAD_REQUEST,
-                exception.getMessage()
+                HttpStatus.BAD_REQUEST, exception.getMessage()
         );
+    }
+
+    @ExceptionHandler(NotificationException.class)
+    public ResponseEntity<?> handleNotificationException(Exception exception) {
+        return ResponseEntityUtil.responseResultGenerate(
+                HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 }

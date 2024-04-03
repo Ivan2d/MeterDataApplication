@@ -2,8 +2,7 @@ package com.phaselock.meterdataapplication.controller;
 
 import com.phaselock.meterdataapplication.dto.entity.create.MeterReadingCreateDto;
 import com.phaselock.meterdataapplication.dto.entity.read.MeterReadingReadDto;
-import com.phaselock.meterdataapplication.dto.entity.read.MeterTypeReadDto;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.service.MeterReadingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

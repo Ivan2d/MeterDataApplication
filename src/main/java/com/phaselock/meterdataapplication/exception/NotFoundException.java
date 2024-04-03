@@ -1,4 +1,4 @@
-package com.phaselock.meterdataapplication.exception.not_found_exception;
+package com.phaselock.meterdataapplication.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

@@ -6,7 +6,7 @@ import com.phaselock.meterdataapplication.dto.entity.read.OwnerReadDto;
 import com.phaselock.meterdataapplication.entity.Apartment;
 import com.phaselock.meterdataapplication.entity.ApartmentAndOwner;
 import com.phaselock.meterdataapplication.entity.Owner;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.ApartmentMapper;
 import com.phaselock.meterdataapplication.mapper.entity.OwnerMapper;
 import com.phaselock.meterdataapplication.repository.ApartmentAndOwnerRepository;

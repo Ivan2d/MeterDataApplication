@@ -3,7 +3,7 @@ package com.phaselock.meterdataapplication.service;
 import com.phaselock.meterdataapplication.dto.entity.create.MeterReadingCreateDto;
 import com.phaselock.meterdataapplication.dto.entity.read.MeterReadingReadDto;
 import com.phaselock.meterdataapplication.entity.MeterReading;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.MeterReadingMapper;
 import com.phaselock.meterdataapplication.repository.MeterReadingRepository;
 import com.phaselock.meterdataapplication.repository.MeterRepository;

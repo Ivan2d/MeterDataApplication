@@ -19,6 +19,21 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     locations: "classpath:db/migrations"
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  queue:
+    name: meterQueue
+  exchange:
+    name: meterTopicExchange
+  routing:
+    key: meterRoutingKey
 
 keycloak:
   admin-username: admin

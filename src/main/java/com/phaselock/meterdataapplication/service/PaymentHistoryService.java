@@ -3,7 +3,7 @@ package com.phaselock.meterdataapplication.service;
 import com.phaselock.meterdataapplication.dto.entity.create.PaymentHistoryCreateDto;
 import com.phaselock.meterdataapplication.dto.entity.read.PaymentHistoryReadDto;
 import com.phaselock.meterdataapplication.entity.PaymentHistory;
-import com.phaselock.meterdataapplication.exception.not_found_exception.NotFoundException;
+import com.phaselock.meterdataapplication.exception.NotFoundException;
 import com.phaselock.meterdataapplication.mapper.entity.PaymentHistoryMapper;
 import com.phaselock.meterdataapplication.repository.AccountRepository;
 import com.phaselock.meterdataapplication.repository.PaymentHistoryRepository;
