@@ -33,7 +33,7 @@ import static com.phaselock.meterdataapplication.config.keycloak.KeycloakConfigu
 
 @Service
 @RequiredArgsConstructor
-public class KeycloakService {
+public class AuthService {
 
     private final Keycloak keycloak;
 

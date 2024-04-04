@@ -6,7 +6,7 @@ import com.phaselock.meterdataapplication.dto.keycloak.AccessTokenDto;
 import com.phaselock.meterdataapplication.dto.keycloak.LogoutRequestDto;
 import com.phaselock.meterdataapplication.dto.keycloak.LogoutResponseDto;
 import com.phaselock.meterdataapplication.exception.NotFoundException;
-import com.phaselock.meterdataapplication.service.keycloak.KeycloakService;
+import com.phaselock.meterdataapplication.service.keycloak.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Keycloak")
-public class KeycloakRestController {
-    private final KeycloakService keycloakService;
+public class AuthRestController {
+    private final AuthService authService;
 
 
     @PostMapping("/register")
     public void registerUser(@RequestBody UserRegisterDto userRegisterDto) {
-        keycloakService.addUser(userRegisterDto);
+        authService.addUser(userRegisterDto);
     }
 
     @Operation(
@@ -53,7 +53,7 @@ public class KeycloakRestController {
     )
     @PostMapping("/login")
     public AccessTokenDto loginUser(@RequestBody UserAuthDto userAuthDto) {
-       return keycloakService.loginUser(userAuthDto);
+       return authService.loginUser(userAuthDto);
     }
 
     @Operation(
@@ -81,6 +81,6 @@ public class KeycloakRestController {
     )
     @PostMapping("/logout")
     public LogoutResponseDto logoutUser(@RequestBody LogoutRequestDto logoutRequestDto) {
-        return keycloakService.logoutUser(logoutRequestDto);
+        return authService.logoutUser(logoutRequestDto);
     }
 }
