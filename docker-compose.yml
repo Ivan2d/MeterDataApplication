@@ -21,6 +21,7 @@ services:
       RABBITMQ_PASSWORD: guest
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/meter_data_app_realm/protocol/openid-connect/certs
       KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080
+      NOTIFICATION_SERVICE_URL: http://sender-service:8200/api/v1
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_ID: meter_data_app_client
       SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET: 9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB
     networks:
@@ -114,3 +115,4 @@ services:
 
 networks:
   mynetwork:
+    driver: bridge

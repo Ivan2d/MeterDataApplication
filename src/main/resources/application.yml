@@ -51,3 +51,15 @@ springdoc:
     oauth:
       client-id: meter_data_app_client
       client-secret: 9P0UAOmvvj0G4BPtBD4wmvO1yvEVczcB
+
+otp:
+  length: 4
+  ttl: 300
+  attempts: 3
+  delay: 60
+  force: true
+  verification_code: "Verification code: %s"
+
+notification:
+  service:
+    url: http://localhost:8200/api/v1
